@@ -7,12 +7,29 @@ Unicode文字変換ツールです。文字設定ファイルに基づいて、�
 
 ## 実行方法（Windows）
 
+### 方法1: カスタムJREを使用（推奨）
+
+Javaをインストールせずに実行できます：
+
+1. `setup-jre.bat` を**管理者権限**で実行してカスタムJREを生成します
+   ```
+   setup-jre.bat
+   ```
+   
+2. `run.bat` を実行してCharConverterを起動します
+   ```
+   run.bat <文字設定ファイル> <入力ファイル> <出力ファイル>
+   ```
+
+### 方法2: システムのJavaを使用
+
 1. Java 8以降がインストールされていることを確認してください
 2. `run.bat` を実行してCharConverterを起動します
+   ```
+   run.bat <文字設定ファイル> <入力ファイル> <出力ファイル>
+   ```
 
-```
-run.bat <文字設定ファイル> <入力ファイル> <出力ファイル>
-```
+**注意**: `run.bat` は自動的にカスタムJREの存在を確認し、利用可能であればカスタムJREを優先して使用します。
 
 ### 例
 ```
@@ -44,4 +61,23 @@ run.bat mapping.txt input.txt output.txt
 
 - `CharConverter.groovy` - メインのGroovyスクリプト
 - `run.bat` - Windows用実行バッチファイル  
+- `setup-jre.bat` - Windows用カスタムJRE生成バッチファイル
 - `lib/groovy-all-2.4.21.jar` - Groovy 2.4.21 ランタイム
+- `jre/` - カスタムJREディレクトリ（setup-jre.bat実行後に生成）
+
+## セットアップについて
+
+### カスタムJRE生成の詳細
+
+`setup-jre.bat` は以下の処理を自動実行します：
+
+1. **winget** を使用してOpenJDK 17を一時的にインストール
+2. **jlink** コマンドでGroovy実行に必要なJavaモジュールのみを抽出したカスタムJREを生成
+3. 一時的にインストールしたOpenJDKをアンインストール
+
+生成されるカスタムJREは軽量で、システムへのJavaインストールが不要になります。
+
+### 必要な権限
+
+- `setup-jre.bat` の実行には**管理者権限**が必要です（wingetによるソフトウェアのインストール/アンインストールのため）
+- `run.bat` の実行には管理者権限は不要です
