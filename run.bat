@@ -25,13 +25,28 @@ set OUTPUT_FILE=%~3
 rem Groovy jarファイルのパス
 set GROOVY_JAR=%BASE_DIR%lib\groovy-all-2.4.21.jar
 
-rem Javaがインストールされているかチェック
-java -version >nul 2>&1
-if errorlevel 1 (
-    echo エラー: Javaがインストールされていません。
-    echo Java 8以降をインストールしてください。
-    pause
-    exit /b 1
+rem カスタムJREのパス
+set CUSTOM_JRE=%BASE_DIR%jre
+set JAVA_CMD=java
+
+rem カスタムJREが存在するかチェック
+if exist "%CUSTOM_JRE%\bin\java.exe" (
+    echo カスタムJREを使用します: %CUSTOM_JRE%
+    set JAVA_CMD="%CUSTOM_JRE%\bin\java.exe"
+) else (
+    echo カスタムJREが見つかりません。システムのJavaを確認中...
+    rem システムのJavaがインストールされているかチェック
+    java -version >nul 2>&1
+    if errorlevel 1 (
+        echo エラー: Javaが見つかりません。
+        echo.
+        echo 以下のいずれかを実行してください:
+        echo 1. setup-jre.bat を実行してカスタムJREを生成
+        echo 2. Java 8以降をシステムにインストール
+        pause
+        exit /b 1
+    )
+    echo システムのJavaを使用します
 )
 
 rem 入力ファイルが存在するかチェック
@@ -71,7 +86,7 @@ echo 出力ファイル: %OUTPUT_FILE%
 echo.
 
 rem Groovyスクリプトを実行
-java -cp "%GROOVY_JAR%" groovy.ui.GroovyMain "%BASE_DIR%CharConverter.groovy" "%MAPPING_FILE%" "%INPUT_FILE%" "%OUTPUT_FILE%"
+%JAVA_CMD% -cp "%GROOVY_JAR%" groovy.ui.GroovyMain "%BASE_DIR%CharConverter.groovy" "%MAPPING_FILE%" "%INPUT_FILE%" "%OUTPUT_FILE%"
 
 echo.
 echo 実行完了。何かキーを押してください...
