@@ -1,0 +1,4 @@
+混合テスト: あいうえお + 人本日山水 + AEIOU
+Mixed content test with Japanese hiragana, kanji, and English.
+あ人A、か本E、さ日I、た山O、な水Uを変換します。
+This tests multiple character types in one file.

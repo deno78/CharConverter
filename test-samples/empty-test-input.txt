@@ -1,0 +1,3 @@
+Empty mapping test.
+This file will not have any characters converted.
+すべての文字がそのまま出力されるはずです。

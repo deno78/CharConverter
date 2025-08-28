@@ -1,0 +1,4 @@
+HELLO WORLD
+AEIOU are vowels in English.
+Testing English character conversion.
+The letters A, E, I, O, U will be converted.
